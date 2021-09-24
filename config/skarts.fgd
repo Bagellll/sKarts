@@ -13,3 +13,21 @@
 	tags(tags) : "Tags" : "" : "A list of general purpose tags for this entity, for interactions with other entities such as triggers."
 ]
 
+//
+// SKarts.SKartsGame
+//
+@PointClass base(BaseProperties_skarts) = skarts : ""
+[
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+]
+
+//
+// SKarts.SKartsVehicleBase
+//
+@PointClass base(BaseProperties_skarts) = ent_vehiclebase : ""
+[
+	enable_shadows(boolean) [ group="Render Properties" ] : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+

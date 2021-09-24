@@ -2,8 +2,13 @@ using Sandbox;
 
 namespace SKarts
 {
-	partial class Racer : Player
+	partial class SKartsRacer : Player
 	{
+		public bool IsUseDisabled()
+		{
+			return this == null;
+		}
+
 		[Net] public PawnController VehicleController { get; set; }
 		[Net] public PawnAnimator VehicleAnimator { get; set; }
 		[Net, Predicted] public ICamera VehicleCamera { get; set; }
@@ -14,12 +19,12 @@ namespace SKarts
 
 		public Clothing.Container Clothing = new();
 
-		public Racer()
+		public SKartsRacer()
 		{
 			Inventory = new Inventory( this );
 		}
 
-		public Racer( Client cl ) : this()
+		public SKartsRacer( Client cl ) : this()
 		{
 			Clothing.LoadFromClient( cl );
 		}
@@ -55,6 +60,29 @@ namespace SKarts
 			Clothing.DressEntity( this );
 
 			base.Respawn();
+
+			SKartsVehicleBase vEnt;
+
+			if ( Vehicle == null )
+			{
+				vEnt = Library.Create<SKartsVehicleBase>( "ent_vehiclebase" );
+			}
+			else
+			{
+				vEnt = Vehicle as SKartsVehicleBase;
+			}
+
+			vEnt.Position = Position + Vector3.Up * 32;
+			vEnt.Rotation = Rotation.From( new Angles( 0, this.EyeRot.Angles().yaw, 0 ) );
+
+			vEnt.SetDriver(this);
+		}
+
+		public override PawnController GetActiveController()
+		{
+			if ( VehicleController != null ) return VehicleController;
+
+			return base.GetActiveController();
 		}
 	}
 }
