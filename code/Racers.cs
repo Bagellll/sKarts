@@ -9,11 +9,11 @@ namespace SKarts
 			return this == null;
 		}
 
-		[Net] public PawnController VehicleController { get; set; }
-		[Net] public PawnAnimator VehicleAnimator { get; set; }
-		[Net, Predicted] public ICamera VehicleCamera { get; set; }
-		[Net, Predicted] public Entity Vehicle { get; set; }
-		[Net, Predicted] public ICamera MainCamera { get; set; }
+		[Net] public PawnController VehicleController { get; set; } = null;
+		[Net] public PawnAnimator VehicleAnimator { get; set; } = null;
+		[Net, Predicted] public ICamera VehicleCamera { get; set; } = null;
+		[Net, Predicted] public Entity Vehicle { get; set; } = null;
+		[Net, Predicted] public ICamera MainCamera { get; set; } = null;
 
 		public ICamera LastCamera { get; set; }
 
@@ -83,6 +83,20 @@ namespace SKarts
 			if ( VehicleController != null ) return VehicleController;
 
 			return base.GetActiveController();
+		}
+
+		public ICamera GetActiveCamera()
+		{
+			if ( VehicleCamera != null ) return VehicleCamera;
+
+			return MainCamera;
+		}
+
+		public override void Simulate( Client cl )
+		{
+			base.Simulate( cl );
+
+			Camera = GetActiveCamera();
 		}
 	}
 }

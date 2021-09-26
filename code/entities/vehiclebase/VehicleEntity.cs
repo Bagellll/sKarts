@@ -72,8 +72,8 @@ namespace SKarts
 			var body = selfBody.SelfOrParent;
 			if ( !body.IsValid() ) return;
 
-			body.Velocity += currentInput.throttle * body.Rotation.Forward.Normal * 25;
-			body.AngularVelocity += currentInput.turning * body.Rotation.Up.Normal * 2;
+			body.Velocity += currentInput.throttle.Clamp( -1, 1 ) * body.Rotation.Forward.Normal * 25;
+			body.AngularVelocity += currentInput.turning.Clamp( -1, 1 ) * body.Rotation.Up.Normal * 2;
 		}
 
 		public void SetDriver( Player user )
@@ -83,7 +83,7 @@ namespace SKarts
 				player.Vehicle = this;
 				player.VehicleController = new SKartsVehicleController();
 				player.VehicleAnimator = player.Animator;
-				player.VehicleCamera = new PlayerCamera();
+				player.VehicleCamera = new VehicleCamera();
 				player.Parent = this;
 				player.LocalPosition = PhysicsBody.LocalMassCenter;
 				player.LocalRotation = Rotation.Identity;
